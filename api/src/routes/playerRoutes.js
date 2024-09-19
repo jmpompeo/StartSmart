@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPlayers, getPlayersById, comparePlayers } = require('../controllers/playerController');
+const { getAllPlayers, getPlayerById, comparePlayers } = require('../controllers/playerController');
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', getAllPlayers);
 
 // Get player by ID
-router.get('/:id', getPlayersById);
+router.get('/:id', getPlayerById);
 
 // Compare two players
 router.post('/compare', comparePlayers);

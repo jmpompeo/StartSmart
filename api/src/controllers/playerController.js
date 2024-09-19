@@ -19,7 +19,7 @@ const getPlayerById = async (req, res, next) => {
         if (!player) {
             return res.status(404).json({message: 'player not found'});
         }
-        resizeTo.status(200).json(player);
+        res.status(200).json(player);
     } catch (error) {
         next(error);
     }
@@ -33,8 +33,8 @@ const comparePlayers = async (req, res, next) => {
         const allPlayers = await fetchAllPlayers();
 
         // Find player ID's by their names
-        const player1 = allPlayers.find(player => player.name === player1Name);
-        const player2 = allPlayers.find(player => player.name === player2Name);
+        const player1 = allPlayers.find(player => player.FULL_NAME === player1Name);
+        const player2 = allPlayers.find(player => player.FULL_NAME === player2Name);
 
         if (!player1 || !player2) {
             return res.status(404).json({message: 'One or both players not found'});
