@@ -15,7 +15,11 @@ const getAllPlayers = async (req, res, next) => {
 const getPlayerById = async (req, res, next) => {
     try {
         const playerId = req.params.id;
+        console.log(`Fetching player ${playerId}`);
+
         const player = await fetchPlayerById(playerId);
+        console.log(`Player data:`, player);
+        
         if (!player) {
             return res.status(404).json({message: 'player not found'});
         }

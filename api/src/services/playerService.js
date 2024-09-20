@@ -18,16 +18,14 @@ const fetchPlayerById = async (playerId) => {
     try {
         const playerUrl = `https://watsonfantasyfootball.espn.com/espnpartner/dallas/players/players_${playerId}_ESPNFantasyFootball_2024.json`;
         const response = await axios.get(playerUrl);
-        const playerData = response.data;
 
-        return {
-            fullName: playerData.FULL_NAME,
-            position: playerData.POSITION,
-            nextOpponent: playerData.OPPONENT_NAME,
-            opponentRank: playerData.OPPONENT_RANK,
-            
+        if (!Array.isArray(response.data) || response.data.length === 0) {
+            throw new Error(`No data found for player: ${playerId}`);
         }
+
+        return response.data;
     } catch (error) {
+        console.error(`Error fetching player: ${playerId}`);
         throw new Error(`Error fetching data for player ID ${playerId}`);
     }
 };
