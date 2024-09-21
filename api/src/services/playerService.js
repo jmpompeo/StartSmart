@@ -19,11 +19,26 @@ const fetchPlayerById = async (playerId) => {
         const playerUrl = `https://watsonfantasyfootball.espn.com/espnpartner/dallas/players/players_${playerId}_ESPNFantasyFootball_2024.json`;
         const response = await axios.get(playerUrl);
 
-        if (!Array.isArray(response.data) || response.data.length === 0) {
+        const playerDataArray = response.data;
+
+        if (!Array.isArray(playerDataArray) || playerDataArray.length === 0) {
             throw new Error(`No data found for player: ${playerId}`);
         }
 
-        return response.data;
+        // Find the data for the most current week
+        const currentWeekData = playerDataArray.reduce((prev, curr) => {
+            return curr.EVENT_WEEK > prev.EVENT_WEEK ? curr : prev;
+        });
+
+        return {
+            fullName: currentWeekData.FULL_NAME,
+            position: currentWeekData.POSITION,
+            nextOpponent: currentWeekData.OPPONENT_NAME,
+            opponentRank: currentWeekData.OPPOSITION_RANK,
+            projectedPoints: currentWeekData.OUTSIDE_PROJECTION,
+            currentWeek: currentWeekData.EVENT_WEEK
+        };
+
     } catch (error) {
         console.error(`Error fetching player: ${playerId}`);
         throw new Error(`Error fetching data for player ID ${playerId}`);
